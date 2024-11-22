@@ -1,15 +1,17 @@
-require('dotenv').config();
-const sql = require('mssql');
+import dotenv from 'dotenv';
+import sql from 'mssql';
+
+dotenv.config();
 
 const config = {
-    server: process.env.DB_SERVER,
-    port: parseInt(process.env.DB_PORT, 10),
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    server: process.env.DB_SERVER || 'localhost',
+    port: parseInt(process.env.DB_PORT) || 1433,
+    user: process.env.DB_USER || 'db_connect',
+    password: process.env.DB_PASSWORD || '2901*',
+    database: process.env.DB_NAME || 'Flowly',
     options: {
-        encrypt: process.env.DB_ENCRYPT === 'true',
-        trustServerCertificate: process.env.DB_TRUST_CERT === 'true'
+        encrypt: false,
+        trustServerCertificate: true
     }
 };
 
@@ -23,4 +25,6 @@ async function connectToDatabase() {
     }
 }
 
-module.exports = { connectToDatabase };
+export default connectToDatabase;
+
+connectToDatabase();
