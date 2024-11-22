@@ -14,7 +14,15 @@
       transform: translateY(0);
     }
   }
-  
+  /* Animación para pagina */
+  @keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
   .animate-fadeIn {
     animation: fadeIn 1s ease-out forwards;
   }
@@ -29,11 +37,31 @@
       background-position: 0% 50%;
     }
   }
+  header{
+    animation: fadeIn 2s ease-in-out;
+  }
 
-  .gradient-animated {
-    background: linear-gradient(90deg, #60a5fa, #6366f1, #7c3aed);
-    background-size: 200% 200%;
-    transition: transform 0.2s ease;
+  body {
+    background: linear-gradient(90deg, #8789f5, #a27aff, #ff74b9); /* Colores equivalentes */
+    background-size: 300% 300%; 
+    animation: fadeIn 2s ease-in-out;
+    width: 100%;
+    animation: bgMove 10s ease-in-out infinite; /* Animación infinita */
+    overflow: hidden;
+    
+  }
+  
+  /* Definimos la animación */
+  @keyframes bgMove {
+    0% {
+      background-position: 0% 50%; /* Comienza en el inicio del gradiente */
+    }
+    50% {
+      background-position: 100% 50%; /* Mueve el gradiente a la derecha */
+    }
+    100% {
+      background-position: 0% 50%; /* Regresa al inicio */
+    }
   }
 
   .gradient-animated:hover {

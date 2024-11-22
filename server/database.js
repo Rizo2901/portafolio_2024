@@ -1,20 +1,17 @@
-
 require('dotenv').config();
 const sql = require('mssql');
 
 const config = {
-    server: 'localhost',
-    port: parseInt('1433'),
-    user: 'db_connect',
-    password: '2901*',
-    database: 'Flowly',
+    server: process.env.DB_SERVER,
+    port: parseInt(process.env.DB_PORT, 10),
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     options: {
-        encrypt: false,
-        trustServerCertificate: true
+        encrypt: process.env.DB_ENCRYPT === 'true',
+        trustServerCertificate: process.env.DB_TRUST_CERT === 'true'
     }
 };
-
-
 
 async function connectToDatabase() {
     try {
@@ -25,6 +22,5 @@ async function connectToDatabase() {
         console.error('Full error details:', err);
     }
 }
-
 
 module.exports = { connectToDatabase };

@@ -1,28 +1,47 @@
+import express from 'express';
+import session from 'express-session';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import SequelizeStore from 'connect-session-sequelize';
+import db from './database.js';
 
-const express = require('express');
-const path = require('path');
-const cors = require('cors');
-const { connectToDatabase } = require('./database'); 
+dotenv.config();
 
 const app = express();
-const PORT = 5173;
 
-connectToDatabase(); 
 
-const corsOptions = {
-    origin: [' http://localhost:5173/'],
-};
-
-app.use(cors(corsOptions));
-
-app.use(express.static(path.join(__dirname, '../client')));
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/index.html'));
+const sessionStore = SequelizeStore(session.Store);
+const store = new sessionStore({
+    db: db
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on Port ${PORT}`);
-});
 
-console.log(`http://localhost:${PORT}`);
+app.use(session({
+    secret: process.env.SESS_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: store,
+    cookie: {
+        secure: 'auto' 
+    }
+}));
+
+
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:5173' 
+}));
+
+
+app.use(express.json());
+
+
+import UserRoute from './routes/UserRoute.js'; 
+import AuthRoute from './routes/AuthRoute.js';  
+
+app.use(UserRoute); 
+app.use(AuthRoute);  
+
+app.listen(process.env.APP_PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${process.env.APP_PORT}`);
+});
